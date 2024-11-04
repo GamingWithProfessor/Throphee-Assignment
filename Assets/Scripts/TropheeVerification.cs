@@ -6,7 +6,7 @@ using System.Collections;
 
 public class TropheeVerification : MonoBehaviour
 {
-    private static bool isVerified = false; // Track verification status
+    private static bool isVerified = false;
 
     private VisualElement root;
     private TextField clientIDField;
@@ -51,7 +51,7 @@ public class TropheeVerification : MonoBehaviour
         {
             statusLabel.text = "Verification Successful!";
             isVerified = true;
-            AddMenuItem(); // Call method to add menu item
+            UpdateMenuCheckmark();
         }
         else
         {
@@ -59,13 +59,9 @@ public class TropheeVerification : MonoBehaviour
         }
     }
 
-    // Adds the menu item dynamically
-    private static void AddMenuItem()
+    private static void UpdateMenuCheckmark()
     {
-        EditorApplication.delayCall += () =>
-        {
-            Menu.SetChecked("Trophee/Verify", true);  // Set the submenu item as active
-        };
+        Menu.SetChecked("Trophee/Verify", isVerified);
     }
 
     [MenuItem("Trophee/Verify", false, 0)]
@@ -73,12 +69,11 @@ public class TropheeVerification : MonoBehaviour
     {
         if (!isVerified)
         {
-            Debug.Log("Verification required to access this menu.");
+            EditorUtility.DisplayDialog("Verification Required", "Please verify your credentials to access this menu.", "OK");
         }
         else
         {
-            Debug.Log("Trophee menu is active!");
-            // Additional functionality after verification
+            EditorUtility.DisplayDialog("Verification Successful", "You have successfully verified! The Trophee menu is now active.", "OK");
         }
     }
 }
